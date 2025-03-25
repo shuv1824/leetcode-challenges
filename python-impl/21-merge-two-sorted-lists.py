@@ -1,57 +1,66 @@
 # https://leetcode.com/problems/merge-two-sorted-lists/description/
-from typing import Optional
+from typing import Optional, List
 
 
-class Node:
-    def __init__(self, value):
+class ListNode:
+    def __init__(self, value=0, next=None):
         self.value = value
-        self.next = None
+        self.next = next
 
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
+def create_linked_list(lst: List[int]) -> Optional[ListNode]:
+    dummy = ListNode()
+    current = dummy
 
-    def __repr__(self):
-        values = []
-        temp = self.head
-        while temp:
-            values.append(temp.value)
-            temp = temp.next
-        return str(values)
+    for num in lst:
+        current.next = ListNode(num)
+        current = current.next
 
-    def insert(self, value):
-        new_node = Node(value)
-        if not self.head:
-            self.head = new_node
+    return dummy.next
+
+
+def list_from_nodes(head: Optional[ListNode]) -> List[int]:
+    result = []
+    current = head
+    while current:
+        result.append(current.value)
+        current = current.next
+    return result
+
+
+def mergeTwoLists(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    mergedList = ListNode()
+    current = mergedList
+
+    while list1 and list2:
+        if list1.value <= list2.value:
+            current.next = list1
+            list1 = list1.next
         else:
-            temp = self.head
-            while temp.next:
-                temp = temp.next
-            temp.next = new_node
+            current.next = list2
+            list2 = list2.next
 
+        current = current.next
 
-def mergeTwoLists(list1: Optional[LinkedList], list2: Optional[LinkedList]) -> Optional[LinkedList]:
-    pass
+    current.next = list1 if list1 else list2
+
+    return mergedList.next
 
 
 def main():
     while True:
-        linkedlist1 = LinkedList()
-        linkedlist2 = LinkedList()
-
-        list1 = list(
+        list1_input = list(
             map(int, input("Enter numbers separated by spaces for list1: ").split()))
-        list2 = list(
+        list1 = create_linked_list(list1_input)
+
+        list2_input = list(
             map(int, input("Enter numbers separated by spaces for list2: ").split()))
+        list2 = create_linked_list(list2_input)
 
-        for val in list1:
-            linkedlist1.insert(val)
-        for val in list2:
-            linkedlist2.insert(val)
+        merged_head = mergeTwoLists(list1, list2)
+        merged_list = list_from_nodes(merged_head)
 
-        mergedList = mergeTwoLists(linkedlist1, linkedlist2)
-        print(mergedList)
+        print(merged_list)
 
 
 if __name__ == "__main__":
