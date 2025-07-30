@@ -8,38 +8,48 @@ class ListNode:
         self.next = next
 
 
-def create_linked_list(lst: List[int]) -> Optional[ListNode]:
-    dummy = ListNode()
-    current = dummy
+def create_linked_list(lst: List[int], pos: int) -> Optional[ListNode]:
+    linkedList = ListNode()
+    temp = None
 
-    for num in lst:
-        current.next = ListNode(num)
+    current = linkedList
+
+    for i in range(len(lst)):
+        current.next = ListNode(lst[i])
         current = current.next
 
-    return dummy.next
+        if i == pos:
+            temp = current
+
+        if i == len(lst) - 1:
+            current.next = temp
+
+    return linkedList.next
 
 
 def hasCycle(head: Optional[ListNode]) -> bool:
-    if not head or not head.next:
-        return False
-    current = head
-    nxt = current.next
+    current = nxt = head
 
-    while current or nxt:
-        if current.val == nxt.val:
-            return True
+    while nxt and nxt.next:
         current = current.next
         nxt = nxt.next.next
+
+        if current == nxt:
+            return True
 
     return False
 
 
 def main():
     while True:
-        list1_input = list(
-            map(int, input("Enter numbers separated by spaces for list1: ").split())
+        list_input = list(
+            map(int, input("Enter numbers separated by spaces for list: ").split())
         )
-        list1 = create_linked_list(list1_input)
+        pos = input("Enter a pos: ")
+
+        head = create_linked_list(list_input, int(pos))
+
+        print(hasCycle(head))
 
 
 if __name__ == "__main__":
