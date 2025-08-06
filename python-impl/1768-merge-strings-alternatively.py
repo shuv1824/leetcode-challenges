@@ -20,6 +20,8 @@ def mergeAlternately(word1: str, word2: str) -> str:
 
     return res
 
+    # return "".join([haystack[i] + needle[i] for i in range(min(len(haystack), len(needle)))])
+
 
 def main():
     while True:
